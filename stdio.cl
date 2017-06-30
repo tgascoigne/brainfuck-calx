@@ -8,9 +8,9 @@ type size_t uint64;
 
 EOF := -1;
 
-SEEK_SET: whence_t = 0;
-SEEK_CUR: whence_t = 1;
-SEEK_END: whence_t = 2;
+SEEK_SET := whence_t(0);
+SEEK_CUR := whence_t(1);
+SEEK_END := whence_t(2);
 
 extern "C" fopen: fn(path: string, mode: string) -> file_t;
 extern "C" fseek: fn(fd: file_t, offset: uint64, whence: whence_t) -> bool;

@@ -10,7 +10,7 @@ type LLBuilder *void;
 type LLContext *void;
 
 type LLOp int;
-LLVMIntEQ: LLOp = 32;
+LLVMIntEQ := LLOp(32);
 
 // Modules
 extern "C" LLVMModuleCreateWithName: fn(name: string) -> LLModule;
