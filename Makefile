@@ -1,14 +1,19 @@
-CALX=clcc
-LLI=lli-mp-3.9
-LDFLAGS=`llvm-config-mp-3.9 --libs --system-libs --cflags --ldflags core analysis executionengine interpreter native`
-RUNTIME=../runtime
+CALX=calxcc
+LLI=lli
+RUNTIME=../calx/runtime
+STDLIB=../calx/std
+LDFLAGS=`llvm-config --libs --system-libs --cflags --ldflags core analysis executionengine interpreter native`
 
-bfuck: irgen.cl parse.cl stdio.cl runtime.cl llvm.cl opcodes.cl stack.cl main.cl
-	$(CALX) -runtime $(RUNTIME) -Xclang "$(LDFLAGS)" -o $@ $^
+BIN=bfuckcc
+PKG_DIR=bfuck
+SOURCES=$(wildcard $(PKG_DIR)/*.cl)
+
+$(BIN): $(SOURCES)
+	$(CALX) -I $(STDLIB) -runtime $(RUNTIME) -Xclang "$(LDFLAGS)" -o $@ $(PKG_DIR)
 	chmod +x $@
 
-%.ll: examples/%.bf bfuck
-	./bfuck $< 2> $@
+%.ll: examples/%.bf $(BIN)
+	./$(BIN) $< 2> $@
 
 hello: hello.ll
 	$(LLI) $<
